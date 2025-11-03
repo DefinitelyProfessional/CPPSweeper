@@ -9,14 +9,15 @@
 #include "variable_definitions.hpp"
 
 // HELPER FUNCTION FOR prompt_int()
-void display_prompt(WINDOW* win, int row_, int col_, const std::string& message){
+void display_prompt(WINDOW* win, const int &row_, const int &col_, const std::string& message){
     mvwprintw(win, row_, col_, "%s   ", message.c_str()); // print message prompt
     int cursor_x = col_ + (int)message.size(); // calculate where the cursor starts
     wmove(win, row_, cursor_x); // position the cursor at the end of the message
     wrefresh(win); return; // display the prompt and exit
 }
 // PROMPT INTEGER INPUTS
-int prompt_int(WINDOW* win, int row_, int col_, const std::string& message,  int low_, int high_) {
+int prompt_int(WINDOW* win, const int &row_, const int &col_,
+const std::string& message, const int &low_, const int &high_) {
     std::string input_; // this is the buffer to receive inputs
     constexpr int MAX_DIGITS = 3;
 

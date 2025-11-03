@@ -20,7 +20,7 @@ void welcome_screen(void) {
     wrefresh(wel_scr); wgetch(press_enter_scr); delwin(wel_scr); return;
 }
 // HELPER FUNCTION FOR THE prompt_window_setup()
-bool confirm_preview(int l, int w) {
+bool confirm_preview(const int &l, const int &w) {
     WINDOW* preview_scr = newwin(l, w, 0, 0); box(preview_scr, 0, 0);
     PANEL* preview_panel = new_panel(preview_scr);
     mvwprintw(preview_scr, 1, 1, "This will be the size of the minefield");
