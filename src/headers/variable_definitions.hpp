@@ -10,6 +10,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <random>
 
 // custom data structure to coordinate PDCurses based display
 struct WINPAN { // aka WindowPanel
@@ -73,13 +74,16 @@ int minefield_y, minefield_x, mine_count;
 
 struct GRID {
     bool isMine = false;
-    bool isRevealed = false;
+    bool isHidden = true;
     bool isFlagged = false;
     int adjacentMines = 0;
 };
 std::vector<std::vector<GRID>> MINEFIELD;
+// TO MAKE A FAST EFFICIENT 3X3 SEARCH OF EACH MINEFIELD GRID
+const int MATRIX_Y[8] = {-1, -1, -1,  0, 0,  1, 1, 1};
+const int MATRIX_X[8] = {-1,  0,  1, -1, 1, -1, 0, 1};
+// TO SAVE THE COORDS OF THE MINES TO SPEED UP WIN CHECKS
 
-#include <random>
 
 // color definitions >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> THESE ARE GAME INITIALIZATION
 constexpr short C_BLACK = 0, C_WHITE = 1, C_RED = 2, C_ORANGE = 3, C_GOLD = 4, C_MAGENTA = 5;

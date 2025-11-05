@@ -20,10 +20,14 @@ int main(void) {
     while(true) {
         // the player choose how big the field they want to work with.
         prompt_minefield_assignment();
+        // setup the minefield
+        generate_minefield();
+        compute_minefield();
         // START THE GAME
-        WINPAN minesweeper(minefield_y, minefield_x*3, 0, 0, true);
-        WINPAN side_scr(LINES-minefield_y, minefield_x*3, minefield_y, 0, true);
-        
+        WINPAN minesweeper(minefield_y+2, minefield_x*3+2, 0, 0, true);
+        WINPAN side_scr(LINES-minefield_y-2, minefield_x*3+2, minefield_y+2, 0, true);
+        update_panels(); doupdate();
+        display_minefield(minesweeper);
         update_panels(); doupdate();
         side_scr.input();
         minesweeper.input();

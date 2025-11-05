@@ -62,44 +62,9 @@ void prompt_minefield_assignment() {
             prompt_scr.set_style(C_MAGENTA, A_BOLD); prompt_scr.apply_style();
             difficulty = prompt_int(prompt_scr, LINES/2+3, 1, "Difficulty : ", 1, 10);
             // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CALCULATE the GLOBAL VARIABLE mine_count
-            // ((double)(difficulty*5 + 20)/100.0)) is a percentage from 25% to 70% of the minefield will be mines !!!
-            mine_count = (int)((double)(minefield_y*minefield_x) * ((double)(difficulty*5 + 20)/100.0));
+            // ((double)(difficulty*5 + 20)/100.0)) is a percentage from 13% to 40% of the minefield will be mines !!!
+            mine_count = (int)((double)(minefield_y*minefield_x) * ((double)(difficulty*3 + 10)/100.0));
             return; // exit this function
         }
     }
 }
-
-void generate_minefield() {
-    // INITIALIZE THE DIMENTIONS OF THE MINEFIELD TO BE minefield_y rows and minefield_x collumns
-    MINEFIELD = std::vector<std::vector<GRID>>(minefield_y, std::vector<GRID>(minefield_x));
-    for(int y = 0; y < minefield_y; y++){
-        for(int x = 0; x < minefield_x; x++){
-            // MINEFIELD[y][x];
-        }
-    }
-}
-// #3 LET THE GAMES BEGIN AHH FUNCTION
-void game_starts() {
-    int real_minefield_width = minefield_x*3; // because later each grid is printed as 3 chars fixed
-
-    return;
-}
-
-
-// for (std::size_t y = 0; y < MINEFIELD.size(); ++y) {
-//     for (std::size_t x = 0; x < MINEFIELD[y].size(); ++x) {
-//         GRID& cell = MINEFIELD[y][x];
-//         // You can now read or modify cell properties
-//         cell.isMine = true; // example
-//     }
-// }
-// for (auto& row : MINEFIELD) {
-//     for (auto& cell : row) {
-//         cell.isRevealed = false; // example
-//     }
-// }
-// #include <random>
-// // Create a random engine and distribution
-// std::random_device rd;  // Seed
-// std::mt19937 gen(rd()); // Mersenne Twister engine
-// std::uniform_int_distribution<> dist(0, 100); // Range: 0 to 100
