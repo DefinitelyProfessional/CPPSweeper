@@ -88,10 +88,10 @@ std::vector<std::pair<int, int>> MINE_COORDS;
 //     // Efficient: no copy
 // }
 
-
+std::string print_grid(GRID&); // prototype that gets used by GRIDCURSOR objects
 struct GRIDCURSOR {
     int y_cursor = 0, x_cursor = 0;
-    int y_prev, x_prev, y_max, x_max;
+    int y_prev, x_prev, y_max, x_max, win_y, win_x;
     WINPAN &target_win;
     // the peculiar constructor ... initialize variables before constructor body executes
     GRIDCURSOR(const int &MAX_Y, const int &MAX_X, WINPAN &win_) :
@@ -107,9 +107,15 @@ struct GRIDCURSOR {
         x_cursor = (x_prev + x_) % x_max; // right wrap back to left
         if (x_cursor < 0) {x_cursor += x_max;} // left wrap back to right
 
-        // COMPUTE REAL WINDOW CURSOR LOCATION
+        // COMPUTE REAL WINDOW CURSOR LOCATION OF THE PREVIOUS FIRST
+        win_y = y_prev + 1;
+        win_x = 3*x_prev + 1;
         // WE LIKE MOVE IT MOVE IT
-
+        target_win.wprint(win_y, win_x, print_grid(MINEFIELD[y_prev][x_prev]));
+        // reuse again to color the selected area by the cursor
+        win_y = y_cursor + 1;
+        win_x = 3*x_cursor + 1;
+        target_win.wsprint(win_y, win_x, print_grid(MINEFIELD[y_cursor][x_cursor]));
     }
 };
 
@@ -136,7 +142,7 @@ void initialize_cursed_environment() {
         init_color(C_MAGENTA, 1000, 0, 1000);  // magenta
 
         // init_pair(target, foreground, background)
-        init_pair(C_BLACK, C_BLACK, C_WHITE);
+        init_pair(C_BLACK, C_BLACK, C_BLACK);
         init_pair(C_WHITE, C_WHITE, C_BLACK);
         init_pair(C_RED, C_RED, C_BLACK);
         init_pair(C_ORANGE, C_ORANGE, C_BLACK);

@@ -36,34 +36,32 @@ int main(void) {
         update_panels(); doupdate();
         // create the global cursor that 
         GRIDCURSOR MINEFIELD_CURSOR(minefield_y, minefield_x, minesweeper);
+        minesweeper.set_style(6, 0);MINEFIELD_CURSOR.move(0,0);// show the cursor on minesweeper
         // GAME LOOP
         while (true)
         {
+            minesweeper.set_style(6, 0); // for the cursor
             switch (minesweeper.input())
             {
             case 'w': // PRESS W TO MOVE UPWARDS
-                std::cout << "W" << std::endl;
+                MINEFIELD_CURSOR.move(-1, 0);
                 break;
             case 'a': // PRESS A TO MOVE LEFT
-                std::cout << "A" << std::endl;
+                MINEFIELD_CURSOR.move(0, -1);
                 break;
             case 's': // PRESS S TO MOVE DOWNWARDS
-                std::cout << "S" << std::endl;
+                MINEFIELD_CURSOR.move(1, 0);
                 break;
             case 'd': // PRESS D TO MOVE RIGHT
-                std::cout << "D" << std::endl;
+                MINEFIELD_CURSOR.move(0, 1);
                 break;
             case '\n': case '\r': case KEY_ENTER: // PRESS ENTER TO DIG FOR MINES !
-                std::cout << "ENTER" << std::endl;
                 break;
             case 'f': // PRESS F TO FLAG THE MINES
-                std::cout << "F" << std::endl;
                 break;
             case 'm': // PRESS M TO OPEN MANUAL
-                std::cout << "M" << std::endl;
                 break;
             default: // 
-                std::cout << "BREAK" << std::endl;
                 break;
             }
         }
