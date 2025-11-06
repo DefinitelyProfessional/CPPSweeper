@@ -14,8 +14,8 @@
 
 // custom data structure to coordinate PDCurses based display
 struct WINPAN { // aka WindowPanel
-    WINDOW* window_; PANEL* panel_;
-    int line_height, coll_width;
+    WINDOW *window_; PANEL *panel_;
+    int line_height, coll_width; // looks like this havent found a use...
     int text_attr = A_NORMAL; // font style attribute
     short color_pair_id = 0; // color pair id
     // initializer aka CONSTRUCTOR
@@ -24,14 +24,14 @@ struct WINPAN { // aka WindowPanel
         panel_ = new_panel(window_); // create its panel
         if (box_) {box(window_, ACS_VLINE, ACS_HLINE);} // create simple box
         line_height = h; coll_width = w;}
-        // deleter aka DECONSTRUCTOR
-        ~WINPAN() {hide_panel(panel_); del_panel(panel_); delwin(window_);}
-        
-        // quick show hide functions for this WindowPanel
-        void show() {show_panel(panel_);}
-        void hide() {hide_panel(panel_);}
-        // get input from this WindowPanel
-        int input() {return wgetch(window_);}
+    // deleter aka DECONSTRUCTOR
+    ~WINPAN() {hide_panel(panel_); del_panel(panel_); delwin(window_);}
+    
+    // quick show hide functions for this WindowPanel
+    void show() {show_panel(panel_);}
+    void hide() {hide_panel(panel_);}
+    // get input from this WindowPanel
+    int input() {return wgetch(window_);}
         
     // set the STYLE of this WindowPanel
     void set_style(const short &color_id, const int &attr_flags) {
@@ -55,7 +55,7 @@ struct WINPAN { // aka WindowPanel
     void wsprint(const int &row_, const int &col_, const std::string &message) {
         apply_style(); mvwprintw(window_, row_, col_, "%s", message.c_str()); clear_style();}
         
-        void draw_border(
+    void draw_border(
             chtype ls = '|', chtype rs = '|',
         chtype ts = '-', chtype bs = '-',
         chtype tl = '+', chtype tr = '+',
@@ -87,6 +87,33 @@ std::vector<std::pair<int, int>> MINE_COORDS;
 // for (const auto& mine_coord : MINE_COORDS) {
 //     // Efficient: no copy
 // }
+
+
+struct GRIDCURSOR {
+    int y_cursor = 0, x_cursor = 0;
+    int y_prev, x_prev, y_max, x_max;
+    WINPAN &target_win;
+    // the peculiar constructor ... initialize variables before constructor body executes
+    GRIDCURSOR(const int &MAX_Y, const int &MAX_X, WINPAN &win_) :
+        y_max(MAX_Y), x_max(MAX_X), target_win(win_) {} // {} is the constructor body
+    
+    // move the cursor on window
+    void move(const int &y_, const int &x_) {
+        // save the previous cursor coords
+        x_prev = x_cursor; y_prev = y_cursor;
+        // move the cursor with wrapping 
+        y_cursor = (y_prev + y_) % y_max; // top wrap back to bottom
+        if (y_cursor < 0) {y_cursor += y_max;} // bottom wrap back to top
+        x_cursor = (x_prev + x_) % x_max; // right wrap back to left
+        if (x_cursor < 0) {x_cursor += x_max;} // left wrap back to right
+
+        // COMPUTE REAL WINDOW CURSOR LOCATION
+        // WE LIKE MOVE IT MOVE IT
+
+    }
+};
+
+
 
 // color definitions >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> THESE ARE GAME INITIALIZATION
 constexpr short C_BLACK = 0, C_WHITE = 1, C_RED = 2, C_ORANGE = 3, C_GOLD = 4, C_MAGENTA = 5;

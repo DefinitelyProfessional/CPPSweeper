@@ -16,7 +16,7 @@ int main(void) {
     initialize_cursed_environment(); // initscr() and start_color() is called here 
 
     welcome_screen(); // simply prompt the gamestart screen.
-    // MINESWEEPER GAME MAIN LOOP
+    // MINESWEEPER MAIN LOOP
     while(true) {
         // the player choose how big the field they want to work with.
         prompt_minefield_assignment();
@@ -30,10 +30,44 @@ int main(void) {
         side_scr.set_style(C_ORANGE, A_BOLD); side_scr.wsprint(2, 1, "PRESS -W A S D- to move the cursor.");
         side_scr.set_style(C_MAGENTA, A_BOLD); side_scr.wsprint(3, 1, "PRESS -F- to FLAG the MINES !");
         side_scr.set_style(C_GOLD, A_BOLD); side_scr.wsprint(4, 1, "PRESS -ENTER- to DIG FOR MINES !");
-        // side_scr.set_style(C_GOLD, A_BOLD); side_scr.wsprint(4, 1, "PRESS -ENTER- to DIG FOR MINES !");
+        side_scr.set_style(C_WHITE, A_BOLD); side_scr.wsprint(5, 1, "< G O O D L U C K > you'll need it.");
         // display the first minefield empty
         display_minefield(minesweeper);
         update_panels(); doupdate();
+        // create the global cursor that 
+        GRIDCURSOR MINEFIELD_CURSOR(minefield_y, minefield_x, minesweeper);
+        // GAME LOOP
+        while (true)
+        {
+            switch (minesweeper.input())
+            {
+            case 'w': // PRESS W TO MOVE UPWARDS
+                std::cout << "W" << std::endl;
+                break;
+            case 'a': // PRESS A TO MOVE LEFT
+                std::cout << "A" << std::endl;
+                break;
+            case 's': // PRESS S TO MOVE DOWNWARDS
+                std::cout << "S" << std::endl;
+                break;
+            case 'd': // PRESS D TO MOVE RIGHT
+                std::cout << "D" << std::endl;
+                break;
+            case '\n': case '\r': case KEY_ENTER: // PRESS ENTER TO DIG FOR MINES !
+                std::cout << "ENTER" << std::endl;
+                break;
+            case 'f': // PRESS F TO FLAG THE MINES
+                std::cout << "F" << std::endl;
+                break;
+            case 'm': // PRESS M TO OPEN MANUAL
+                std::cout << "M" << std::endl;
+                break;
+            default: // 
+                std::cout << "BREAK" << std::endl;
+                break;
+            }
+        }
+        
 
         side_scr.input();
         minesweeper.input();
