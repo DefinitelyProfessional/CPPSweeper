@@ -78,14 +78,8 @@ int main(void) {
             if (player_won()) {player_WON = true; playing_ = false;}
         }
 
-        // evaluate if the player won
-        if (player_WON) {
-
-        // if the player lost
-        } else {
-
-        }
-
+        // reward in prayer if player spent their finite lifetime trying out this program.
+        if (player_WON) {win_screen();}
         // ask to play again or quit
         if (prompt_replay()) {continue;} // restart the game from the very beginning
         else {break;} // exit and end the gameplay

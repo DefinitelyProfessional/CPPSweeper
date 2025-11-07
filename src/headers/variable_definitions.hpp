@@ -58,7 +58,7 @@ struct WINPAN { // aka WindowPanel
     void wsprint(const int &row_, const int &col_, const std::string &message) {
         apply_style(); mvwprintw(window_, row_, col_, "%s", message.c_str()); clear_style();}
         
-    void draw_border(
+    void draw_border( // UNUSED
             chtype ls = '|', chtype rs = '|',
         chtype ts = '-', chtype bs = '-',
         chtype tl = '+', chtype tr = '+',
@@ -90,6 +90,7 @@ std::vector<std::pair<int, int>> MINE_COORDS;
 
 // THE AMAZING CURSOR FOR SELECTING MINES
 void print_per_grid(WINPAN &, const int &, const int &, bool); // prototype that gets used by GRIDCURSOR objects
+void DFS_reveal(WINPAN &, const int&, const int &); // prototype for GRIDCURSOR as well to reveal grids with DFS
 void BFS_reveal(WINPAN &, const int&, const int &); // prototype for GRIDCURSOR as well to reveal grids with BFS
 struct GRIDCURSOR {
     int y_cursor = 0, x_cursor = 0;
@@ -143,6 +144,8 @@ struct GRIDCURSOR {
             print_per_grid(target_win, y_cursor, x_cursor, true);}
         // this is the case when the grid revealed is 0 and requires DFS to reveal surrounding grids
         else {
+            grid_.isHidden = false;
+            // DFS_reveal(target_win, y_cursor, x_cursor); // initiate BFS reveal
             BFS_reveal(target_win, y_cursor, x_cursor); // initiate BFS reveal
             move(0, 0); // return the cursor to highlight the current position
         } return false;

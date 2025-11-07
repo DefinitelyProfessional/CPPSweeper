@@ -61,9 +61,10 @@ void prompt_minefield_assignment() {
             update_panels(); doupdate();
             prompt_scr.set_style(C_MAGENTA, A_BOLD); prompt_scr.apply_style();
             difficulty = prompt_int(prompt_scr, LINES/2+3, 1, "Difficulty : ", 1, 10);
-            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CALCULATE the GLOBAL VARIABLE mine_count
+            // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CALCULATE the GLOBAL VARIABLE mine_count AND flagged_mines
             // ((double)(difficulty*5 + 20)/100.0)) is a percentage from 7% to 25% of the minefield will be mines !!!
             mine_count = (int)((double)(minefield_y*minefield_x) * ((double)(difficulty*2 + 5)/100.0));
+            flagged_mines = 0; // set the flagged to 0 at start
             return; // exit this function
         }
     }
@@ -94,6 +95,17 @@ void game_over(WINPAN &minesweeper_, WINPAN &side_scr_, const int &y_hit, const 
     side_scr_.set_style(C_GOLD, A_BOLD); side_scr_.wsprint(3, 1, "  'violently explodes into pieces'  ");
     update_panels(); doupdate(); minesweeper_.input();
     return;
+}
+
+// display the win screen
+void win_screen() {
+    WINPAN winners_scr(LINES/3, COLS/2, LINES/2-LINES/6, COLS/2-COLS/4,  false);
+    winners_scr.draw_border();
+    winners_scr.set_style(C_RED, A_BOLD);
+    winners_scr.wsprint(winners_scr.line_height/2-1, 1, "< CONGRATULATIONS !!! YOU WON !!! >");
+    winners_scr.wsprint(winners_scr.line_height/2, 1, "~ THE MINEFIELD IS NOW MINE FREE! ~");
+    winners_scr.wsprint(winners_scr.line_height/2+1, 1, "You shall be rewarded in prayer. God Bless.");
+    update_panels(); doupdate(); winners_scr.input(); return;
 }
 
 // ask if player wants to replay

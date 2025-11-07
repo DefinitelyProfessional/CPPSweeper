@@ -143,6 +143,7 @@ void BFS_reveal(WINPAN &minesweeper_, const int&y_, const int &x_) {
     while (!search_these.empty()) {
         // take the coordinates of the current grid being searched
         auto [this_y, this_x] = search_these.front();
+        search_these.pop_front(); // pop this current grid out of the queue
         // search a 3x3 grid around each grid that is 0
         for (i = 0; i < 8; i++) {
             check_y = this_y + MATRIX_Y[i]; // calculate the coordinates of the 3x3 search
@@ -160,12 +161,41 @@ void BFS_reveal(WINPAN &minesweeper_, const int&y_, const int &x_) {
             // display it on minefield
             print_per_grid(minesweeper_, check_y, check_x, false);
             update_panels(); doupdate();
-            std::this_thread::sleep_for(std::chrono::milliseconds(1)); // aesthetic delay ...
+            // std::this_thread::sleep_for(std::chrono::microseconds(1000)); // aesthetic delay ...
         }
-        search_these.pop_front(); // pop this current grid out of the queue
     } return;
 }
+// >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+void DFS_reveal(WINPAN &minesweeper_, const int&y_, const int &x_) {
+    std::deque<std::pair<int, int>> search_these; // the STACK buffer
+    // put the initial grid to search into 
+    search_these.emplace_front(y_, x_); int i, check_y, check_x;
 
+    while (!search_these.empty()) {
+        // take the coordinates of the current grid being searched
+        auto [this_y, this_x] = search_these.front();
+        search_these.pop_front(); // pop this current grid out of the stack
+        // search a 3x3 grid around each grid that is 0
+        for (i = 0; i < 8; i++) {
+            check_y = this_y + MATRIX_Y[i]; // calculate the coordinates of the 3x3 search
+            if (check_y < 0 || check_y >= minefield_y) {continue;}
+            check_x = this_x + MATRIX_X[i]; // condition checks to avoid accessing out of range
+            if (check_x < 0 || check_x >= minefield_x) {continue;}
+
+            // REFERENCE THE REAL GRID CURRENTLY BEING CHECKED
+            GRID &grid_ = MINEFIELD[check_y][check_x];
+            if (!grid_.isHidden) {continue;} // skip if this grid is already not hidden
+            // if this grid has 0 adjacent mines, add it to the stack to 
+            if (grid_.adjacentMines == 0) {search_these.emplace_front(check_y, check_x);}
+            // reveal this grid, this as well prevents infinitely looping this queue
+            grid_.isHidden = false;
+            // display it on minefield
+            print_per_grid(minesweeper_, check_y, check_x, false);
+            update_panels(); doupdate();
+            // std::this_thread::sleep_for(std::chrono::microseconds(1000)); // aesthetic delay ...
+        }
+    } return;
+}
 
 // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
 bool player_won() {// check win condition
