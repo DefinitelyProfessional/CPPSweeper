@@ -102,9 +102,9 @@ void win_screen() {
     WINPAN winners_scr(LINES/3, COLS/2, LINES/2-LINES/6, COLS/2-COLS/4,  false);
     winners_scr.draw_border();
     winners_scr.set_style(C_RED, A_BOLD);
-    winners_scr.wsprint(winners_scr.line_height/2-1, 1, "< CONGRATULATIONS !!! YOU WON !!! >");
-    winners_scr.wsprint(winners_scr.line_height/2, 1, "~ THE MINEFIELD IS NOW MINE FREE! ~");
-    winners_scr.wsprint(winners_scr.line_height/2+1, 1, "You shall be rewarded in prayer. God Bless.");
+    winners_scr.wsprintcenter(winners_scr.line_height/2-1, "< CONGRATULATIONS !!! YOU WON !!! >");
+    winners_scr.wsprintcenter(winners_scr.line_height/2,   "~ THE MINEFIELD IS NOW MINE FREE! ~");
+    winners_scr.wsprintcenter(winners_scr.line_height/2+1, "You shall be rewarded in prayer. God Bless.");
     update_panels(); doupdate(); winners_scr.input(); return;
 }
 
@@ -112,8 +112,8 @@ void win_screen() {
 bool prompt_replay() {
     WINPAN replay_scr(LINES/3, COLS/2, LINES/2-LINES/6, COLS/2-COLS/4,  true);
     replay_scr.set_style(C_MAGENTA, A_BOLD);
-    replay_scr.wsprint(replay_scr.line_height/2, 1, "In for another round ?");
-    replay_scr.wprint(replay_scr.line_height/2+1, 1, "ENTER to confirm or any key to cancel");
+    replay_scr.wsprint(replay_scr.line_height/2, 2, "In for another round ?");
+    replay_scr.wprint(replay_scr.line_height/2+1, 2, "ENTER to confirm or any key to cancel");
     update_panels(); doupdate;
     int ch = replay_scr.input();
     if (ch == '\n' || ch == '\r' || ch == KEY_ENTER) {return true;}

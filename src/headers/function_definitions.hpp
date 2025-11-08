@@ -163,7 +163,7 @@ void BFS_reveal(WINPAN &minesweeper_, const int&y_, const int &x_) {
             // display it on minefield
             print_per_grid(minesweeper_, check_y, check_x, false);
             update_panels(); doupdate();
-            // std::this_thread::sleep_for(std::chrono::microseconds(1000)); // aesthetic delay ...
+            std::this_thread::sleep_for(std::chrono::microseconds(1000)); // aesthetic delay ...
         }
     } return;
 }
@@ -194,7 +194,7 @@ void DFS_reveal(WINPAN &minesweeper_, const int&y_, const int &x_) {
             // display it on minefield
             print_per_grid(minesweeper_, check_y, check_x, false);
             update_panels(); doupdate();
-            // std::this_thread::sleep_for(std::chrono::microseconds(1000)); // aesthetic delay ...
+            std::this_thread::sleep_for(std::chrono::microseconds(1000)); // aesthetic delay ...
         }
     } return;
 }

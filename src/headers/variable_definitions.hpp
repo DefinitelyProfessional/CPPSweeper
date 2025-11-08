@@ -51,13 +51,19 @@ struct WINPAN { // aka WindowPanel
     void wprint(const int &row_, const int &col_, const std::string &message) {
         mvwprintw(window_, row_, col_, "%s", message.c_str());}
 
-        // move cursor within this window
+    // move cursor within this window
     void move_cursor(const int &row_, const int &col_) {wmove(window_, row_, col_);}
     
     // print into this window with s t y l e
     void wsprint(const int &row_, const int &col_, const std::string &message) {
         apply_style(); mvwprintw(window_, row_, col_, "%s", message.c_str()); clear_style();}
-        
+    // print somewhat centered
+    void wsprintcenter(const int &row_, const std::string &message) {
+        apply_style(); mvwprintw(window_, row_, (coll_width/2)-(message.length()/2)-1, "%s", message.c_str()); clear_style();}
+
+    // clear the window's internal buffer
+    void wclear() {werase(window_);}
+
     void draw_border( // UNUSED
             chtype ls = '|', chtype rs = '|',
         chtype ts = '-', chtype bs = '-',
@@ -65,8 +71,6 @@ struct WINPAN { // aka WindowPanel
         chtype bl = '+', chtype br = '+') {
         apply_style(); wborder(window_, ls, rs, ts, bs, tl, tr, bl, br); clear_style();
     }
-    // clear the window's internal buffer
-    void wclear() {werase(window_);}
 };
 
 
@@ -144,9 +148,13 @@ struct GRIDCURSOR {
             print_per_grid(target_win, y_cursor, x_cursor, true);}
         // this is the case when the grid revealed is 0 and requires DFS to reveal surrounding grids
         else {
-            grid_.isHidden = false;
-            // DFS_reveal(target_win, y_cursor, x_cursor); // initiate BFS reveal
-            BFS_reveal(target_win, y_cursor, x_cursor); // initiate BFS reveal
+            grid_.isHidden = false; // the first 0 grid must be unhidden first
+            // make it fun to include both DFS and BFS versions
+            if (y_cursor % 2 == 0) {
+                DFS_reveal(target_win, y_cursor, x_cursor); // initiate DFS reveal
+            } else {
+                BFS_reveal(target_win, y_cursor, x_cursor); // initiate BFS reveal
+            }
             move(0, 0); // return the cursor to highlight the current position
         } return false;
     }

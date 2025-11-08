@@ -9,7 +9,7 @@
 #include "headers/gamestages.hpp"
 
 int main(void) {
-    std::cout << "This program is... buggy, DO NOT RESIZE THE SCREEN WHILE RUNNING THE PROGRAM" << "\n";
+    std::cout << "\n\nThis program is... buggy, DO NOT RESIZE THE SCREEN WHILE RUNNING THE PROGRAM" << "\n";
     std::cout << "Thus for your comfort, resize this terminal window to your liking before continuing" << "\n";
     std::cout << "press ENTER to START "; std::string s; std::getline(std::cin, s); s = ""; // awkward method
     
@@ -85,6 +85,7 @@ int main(void) {
         else {break;} // exit and end the gameplay
     }
     endwin(); // the end of it all, clean up and exit Curses mode
-    std::cout << "\nEnd of Session. Thanks for playing :)\n" << std::endl;
+    std::cout << "\n\nEnd of Session. Thanks for playing :)\n\n" << std::endl;
+    std::cout << "Source code available at https://github.com/DefinitelyProfessional/CPPSweeper\n\n" << std::endl;
     return 0;
 }
