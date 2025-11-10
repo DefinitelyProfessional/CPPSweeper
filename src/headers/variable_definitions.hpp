@@ -7,13 +7,14 @@
 #include <curses.h>
 #include <panel.h>
 
-#include <iostream>
-#include <string>
-#include <vector>
-#include <deque>
-#include <random>
-#include <chrono>
-#include <thread>
+#include <iostream> // classic essential
+// #include <string>
+#include <vector> // classic essential
+#include <deque>  // for stack behavior
+#include <random> // for random mine generation
+#include <chrono> // for tracking time
+#include <thread> // for blocking sleep
+#include <cmath> // for score formula
 
 // custom data structure to coordinate PDCurses based display
 struct WINPAN { // aka WindowPanel

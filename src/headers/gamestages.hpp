@@ -120,8 +120,16 @@ void win_screen(std::chrono::duration<double, std::milli> raw_duration_object) {
     winners_scr.draw_border('X', '#', 'M', '0');
     winners_scr.set_style(C_RED, A_BOLD);
 
-    // compute time display into a string
+    // formula to calculate a somewhat fair score ?
     double playtime_ = raw_duration_object.count();
+    double mine_density = (double) mine_count / (double) (minefield_y*minefield_x);
+    double score_multiplier = 1.0 + pow(mine_density, 1.1);
+    // mine_density has slightly exponential influence
+    // whilst playtime is linear influence to decrease
+    double final_score = 1000'000*score_multiplier - playtime_; 
+
+
+    // compute time display into a string
     std::string display_time_string = "";
     int value_buffer;
     const std::vector<std::pair<std::string, double>> time_symbol = {
@@ -132,15 +140,21 @@ void win_screen(std::chrono::duration<double, std::milli> raw_duration_object) {
             display_time_string += std::to_string(value_buffer) + time_str + " ";}
         playtime_ -= value_buffer * time_value;
     }
-
+// You took 43s 484ms to clear the field.
+// YOUR SCORE : 1007366.401519
+// You took 44s 245ms to clear the field.
+// YOUR SCORE : 1006605.082619
     winners_scr.wsprintcenter(winners_scr.line_height/2-2, "< CONGRATULATIONS !!! YOU WON !!! >");
     update_panels(); doupdate(); winners_scr.input();
     winners_scr.wsprintcenter(winners_scr.line_height/2-1,   "~ THE MINEFIELD IS NOW MINE FREE! ~");
     update_panels(); doupdate(); winners_scr.input();
     winners_scr.wsprintcenter(winners_scr.line_height/2, "You took " + display_time_string + "to clear the field.");
+    update_panels(); doupdate(); winners_scr.input(); winners_scr.set_style(C_HIGHLIGHT, A_BOLD);
+    winners_scr.wsprintcenter(winners_scr.line_height/2+1, "YOUR SCORE : " + std::to_string(final_score));
+    update_panels(); doupdate(); winners_scr.input(); winners_scr.set_style(C_RED, A_BOLD);
+    winners_scr.wsprintcenter(winners_scr.line_height/2+2, "You shall be rewarded in prayer. God Bless.");
     update_panels(); doupdate(); winners_scr.input();
-    winners_scr.wsprintcenter(winners_scr.line_height/2+1, "You shall be rewarded in prayer. God Bless.");
-    update_panels(); doupdate(); winners_scr.input(); return;
+    return;
 }
 
 // ask if player wants to replay
