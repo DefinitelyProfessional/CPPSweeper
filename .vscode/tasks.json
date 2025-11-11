@@ -2,28 +2,39 @@
     "version": "2.0.0",
     "tasks": [
         {
+            // g++ -std=c++17 -Iinclude -Isrc/headers src/main.cpp -Llib -static lib/pdcurses.a lib/panel.a -lwinmm -o build/minesweeper.exe
             "label": "Compile C++", // THIS HAS TO MATCH WITH launch.json "preLaunchTask"
             "type": "shell",
             "command": "g++",
             "args": [
-                "-g",
-                "${file}",
-                "-o",
-                "${fileDirname}/${fileBasenameNoExtension}.exe"
+                "-std=c++17", // specify the C++ version for the compiler
+
+                "-Iinclude", // include phase : give header search paths to the compiler
+                "-Isrc/headers", // this is the custom headers for this project
+                "src/main.cpp", // THIS IS THE MAIN SOURCE CODE
+
+                "-Llib", // Link libraries phase : give library search paths to the compiler
+                "-static", // argument to tell the compiler to static link the libraries
+                "lib/pdcurses.a", // this is a static library obtained from PDCursesMod
+                "lib/panel.a", // this as well, static libraries from windows console
+                "-lwinmm", // windows multi media library is also required somehow
+
+                "-o", // finally, the output phase
+                "build/minesweeper.exe" // output filename
             ],
             "problemMatcher": ["$gcc"],
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
-            "detail": "Task to compile .cpp files"
+            "detail": "Task to compile this specific project"
         },
         {
             "label": "Compile n Run C++", // This has to match with keybindings.json
             "type": "shell",
             "dependsOn": ["Compile C++"],
             "dependsOrder": "sequence",
-            "command": "${fileDirname}\\${fileBasenameNoExtension}.exe",
+            "command": "build\\minesweeper.exe",
             "presentation": {
                 "panel": "dedicated"
             },
