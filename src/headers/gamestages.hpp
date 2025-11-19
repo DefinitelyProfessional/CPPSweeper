@@ -30,7 +30,7 @@ void welcome_screen() {
 
 // HELPER FUNCTION FOR THE prompt_window_setup()
 bool confirm_preview() {
-    WINPAN preview_scr(minefield_y, minefield_x * 3, 0, 0, true); // * 3 because the minefields are gonna be printed with 3 chars each
+    WINPAN preview_scr(minefield_y+2, minefield_x*3+2, 0, 0, true); // * 3 because the minefields are gonna be printed with 3 chars each
     preview_scr.set_style(C_RED, A_BOLD);
     preview_scr.wsprint(minefield_y/2-1, minefield_x*3/2-19, "This will be the size of the minefield");
     preview_scr.wsprint(minefield_y/2+1, minefield_x*3/2-19, "ENTER to CONFIRM. or any key to cancel");

@@ -97,6 +97,9 @@ std::vector<std::pair<int, int>> MINE_COORDS;
 void print_per_grid(WINPAN &, const int &, const int &, bool); // prototype that gets used by GRIDCURSOR objects
 void DFS_reveal(WINPAN &, const int&, const int &); // prototype for GRIDCURSOR as well to reveal grids with DFS
 void BFS_reveal(WINPAN &, const int&, const int &); // prototype for GRIDCURSOR as well to reveal grids with BFS
+// This time_penalty is to compensate the time taken by the BFS/DFS system with so called jaesthetic delays
+std::chrono::duration<double, std::milli> time_penalty{0};
+
 struct GRIDCURSOR {
     int y_cursor = 0, x_cursor = 0;
     int y_prev, x_prev, y_max, x_max;
@@ -151,16 +154,19 @@ struct GRIDCURSOR {
         else {
             grid_.isHidden = false; // the first 0 grid must be unhidden first
             // make it fun to include both DFS and BFS versions
+            auto start_penalty = std::chrono::high_resolution_clock::now(); // TIME RECORDING THE START OF PENALTY
             if (y_cursor % 2 == 0) {
                 DFS_reveal(target_win, y_cursor, x_cursor); // initiate DFS reveal
             } else {
                 BFS_reveal(target_win, y_cursor, x_cursor); // initiate BFS reveal
             }
             move(0, 0); // return the cursor to highlight the current position
+            auto end_penalty = std::chrono::high_resolution_clock::now(); // TIME RECORDING THE END OF PENALTY
+            std::chrono::duration<double, std::milli> p_ = end_penalty - start_penalty;
+            time_penalty += p_;
         } return false;
     }
 };
-
 
 
 // color definitions >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> THESE ARE GAME INITIALIZATION

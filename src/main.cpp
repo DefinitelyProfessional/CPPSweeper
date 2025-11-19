@@ -99,7 +99,7 @@ int main(void) {
         auto end_record_gameplay = std::chrono::high_resolution_clock::now(); // TIME RECORDING THE END OF GAMEPLAY
         // record elapsed time as playtime in miliseconds which is 0.001 second accuracy,
         // playtime_ is a duration object that requirees .count() to get the actual value.
-        std::chrono::duration<double, std::milli> playtime_ = end_record_gameplay - start_record_gameplay;
+        std::chrono::duration<double, std::milli> playtime_ = end_record_gameplay - start_record_gameplay - time_penalty;
 
         // reward in prayer if player spent their finite lifetime trying out this program.
         if (player_WON) {win_screen(playtime_);}
